@@ -17,7 +17,7 @@ const createUser = async (req, res) => {
     return res.status(StatusCodes.OK).json({ record_inserted: user.affectedRows })
 }
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res) => {   
   const { id } = req.params
   const user = await User.updateUserById(id, req.body) 
   return res

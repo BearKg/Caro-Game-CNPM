@@ -42,7 +42,7 @@ const User = {
       if (!result.affectedRows)
         reject(new BadRequestError('Khong the them user!'))
       resolve(result)
-    }),
+    }), 
   updateUserById: (id, user) => 
     new Promise(async (resolve, reject) => { 
       const q = `CALL suannguoichoi(?, ?, ?, ?, ?, ?, ?)`
@@ -50,12 +50,12 @@ const User = {
       const hashPass = await hashPassword(password)
       const result = await query(q, [
         id,
-        name,
+        name,  
         username,
-        hashPass,
-        email,
-        admin,
-        score,
+        hashPass, 
+        email, 
+        admin,  
+        score,  
       ])
       if (!result.affectedRows) reject(new BadRequestError('Khong the cap nhat!'))
       resolve(result)
@@ -91,9 +91,11 @@ const User = {
       const ID = currentTimeInSeconds.toString()
 
       const q1 = `CALL dangky(?, ?, ?, ?)`
-      const result = await query(q1, [ID, email, username, hashPass])
+      const result = await query(q1, [ID, email, username, hashPass]).catch(err => {
+        reject(new BadRequestError(err.message))
+      })
       
-      if (!result.affectedRows)
+      if (!result?.affectedRows)
         reject(new BadRequestError('Dang ky khong thanh cong!'))
 
       const q2 = `SELECT * FROM user WHERE ID = ?` 
